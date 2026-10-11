@@ -10,13 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminConteudoRouteImport } from './routes/admin.conteudo'
+import { Route as FrotaIndexRouteImport } from './routes/frota.index'
+import { Route as FrotaSlugRouteImport } from './routes/frota.$slug'
+import { Route as AdminVeiculosIndexRouteImport } from './routes/admin.veiculos.index'
+import { Route as AdminVeiculosIdRouteImport } from './routes/admin.veiculos.$id'
 import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -29,6 +41,36 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminConteudoRoute = AdminConteudoRouteImport.update({
+  id: '/conteudo',
+  path: '/conteudo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const FrotaIndexRoute = FrotaIndexRouteImport.update({
+  id: '/frota/',
+  path: '/frota/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrotaSlugRoute = FrotaSlugRouteImport.update({
+  id: '/frota/$slug',
+  path: '/frota/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVeiculosIndexRoute = AdminVeiculosIndexRouteImport.update({
+  id: '/veiculos/',
+  path: '/veiculos/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVeiculosIdRoute = AdminVeiculosIdRouteImport.update({
+  id: '/veiculos/$id',
+  path: '/veiculos/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
   id: '/api/public/media/$',
   path: '/api/public/media/$',
@@ -37,35 +79,91 @@ const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/frota/$slug': typeof FrotaSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/frota/': typeof FrotaIndexRoute
+  '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
+  '/admin/veiculos/': typeof AdminVeiculosIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/frota/$slug': typeof FrotaSlugRoute
+  '/admin': typeof AdminIndexRoute
+  '/frota': typeof FrotaIndexRoute
+  '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
+  '/admin/veiculos': typeof AdminVeiculosIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/frota/$slug': typeof FrotaSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/frota/': typeof FrotaIndexRoute
+  '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
+  '/admin/veiculos/': typeof AdminVeiculosIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/robots.txt' | '/sitemap.xml' | '/api/public/media/$'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/admin/conteudo'
+    | '/frota/$slug'
+    | '/admin/'
+    | '/frota/'
+    | '/admin/veiculos/$id'
+    | '/admin/veiculos/'
+    | '/api/public/media/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/robots.txt' | '/sitemap.xml' | '/api/public/media/$'
-  id: '__root__' | '/' | '/robots.txt' | '/sitemap.xml' | '/api/public/media/$'
+  to:
+    | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/admin/conteudo'
+    | '/frota/$slug'
+    | '/admin'
+    | '/frota'
+    | '/admin/veiculos/$id'
+    | '/admin/veiculos'
+    | '/api/public/media/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/admin/conteudo'
+    | '/frota/$slug'
+    | '/admin/'
+    | '/frota/'
+    | '/admin/veiculos/$id'
+    | '/admin/veiculos/'
+    | '/api/public/media/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  FrotaSlugRoute: typeof FrotaSlugRoute
+  FrotaIndexRoute: typeof FrotaIndexRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
 }
 
@@ -76,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -92,6 +197,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/conteudo': {
+      id: '/admin/conteudo'
+      path: '/conteudo'
+      fullPath: '/admin/conteudo'
+      preLoaderRoute: typeof AdminConteudoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/frota/': {
+      id: '/frota/'
+      path: '/frota'
+      fullPath: '/frota/'
+      preLoaderRoute: typeof FrotaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/frota/$slug': {
+      id: '/frota/$slug'
+      path: '/frota/$slug'
+      fullPath: '/frota/$slug'
+      preLoaderRoute: typeof FrotaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/veiculos/': {
+      id: '/admin/veiculos/'
+      path: '/veiculos'
+      fullPath: '/admin/veiculos/'
+      preLoaderRoute: typeof AdminVeiculosIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/veiculos/$id': {
+      id: '/admin/veiculos/$id'
+      path: '/veiculos/$id'
+      fullPath: '/admin/veiculos/$id'
+      preLoaderRoute: typeof AdminVeiculosIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/media/$': {
       id: '/api/public/media/$'
       path: '/api/public/media/$'
@@ -102,10 +249,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminConteudoRoute: typeof AdminConteudoRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminVeiculosIdRoute: typeof AdminVeiculosIdRoute
+  AdminVeiculosIndexRoute: typeof AdminVeiculosIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminConteudoRoute: AdminConteudoRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminVeiculosIdRoute: AdminVeiculosIdRoute,
+  AdminVeiculosIndexRoute: AdminVeiculosIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  FrotaSlugRoute: FrotaSlugRoute,
+  FrotaIndexRoute: FrotaIndexRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
