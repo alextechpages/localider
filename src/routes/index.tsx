@@ -22,10 +22,6 @@ export const Route = createFileRoute("/")({
     context.queryClient.ensureQueryData(vehiclesQuery());
   },
   head: () => ({
-    {
-  name: "google-site-verification",
-  content: "Y2ONclTW38J2kKJ3ccK7srV_wyhprCR7n52vG4WeV4Q",
-}
 
     meta: [
       { title: TITLE },
