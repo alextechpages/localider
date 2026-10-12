@@ -94,7 +94,7 @@ function VehicleEditor() {
   const save = async (e: FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(f);
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Dados inválidos"); return; }
     setSaving(true);
     const payload = {
       brand: parsed.data.brand, model: parsed.data.model,
@@ -110,14 +110,14 @@ function VehicleEditor() {
       const { count } = await supabase.from("vehicles").select("id", { count: "exact", head: true });
       const { data, error } = await supabase.from("vehicles").insert({ ...payload, slug: newSlug, sort_order: (count ?? 0) + 1 }).select("id").single();
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Veículo criado! Agora adicione as fotos.");
       invalidate();
       navigate({ to: "/admin/veiculos/$id", params: { id: data.id }, replace: true });
     } else {
       const { error } = await supabase.from("vehicles").update({ ...payload, is_demo: false }).eq("id", id);
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Alterações salvas.");
       invalidate();
     }
@@ -164,7 +164,7 @@ function VehicleEditor() {
 
   const removeImage = async (img: { id: string; url: string; storage_path: string | null }) => {
     const { error } = await supabase.from("vehicle_images").delete().eq("id", img.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await deleteMedia([img.storage_path ?? pathFromUrl(img.url)]);
     refetchImages();
     invalidate();

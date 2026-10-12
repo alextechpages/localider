@@ -30,7 +30,7 @@ export function SiteHeader() {
             <Link
               key={n.label}
               to={n.to}
-              hash={n.hash}
+              {...(n.hash ? { hash: n.hash } : {})}
               className="text-sm font-semibold text-ink-muted transition-colors hover:text-accent"
               activeOptions={{ exact: true, includeHash: true }}
               activeProps={{ className: "text-ink-foreground" }}
@@ -59,7 +59,7 @@ export function SiteHeader() {
                   <Link
                     key={n.label}
                     to={n.to}
-                    hash={n.hash}
+                    {...(n.hash ? { hash: n.hash } : {})}
                     onClick={() => setOpen(false)}
                     className="rounded-lg px-3 py-3 font-display text-xl font-bold transition-colors hover:bg-ink-soft hover:text-accent"
                   >

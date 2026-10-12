@@ -54,7 +54,9 @@ function VehiclesAdmin() {
     const j = i + dir;
     if (j < 0 || j >= list.length) return;
     const reordered = [...list];
-    [reordered[i], reordered[j]] = [reordered[j], reordered[i]];
+    const tmp = reordered[i]!;
+    reordered[i] = reordered[j]!;
+    reordered[j] = tmp;
     const results = await Promise.all(
       reordered.map((r, idx) => supabase.from("vehicles").update({ sort_order: idx + 1 }).eq("id", r.id)),
     );
@@ -65,7 +67,7 @@ function VehiclesAdmin() {
   const remove = async (r: Row) => {
     const { data: imgs } = await supabase.from("vehicle_images").select("url, storage_path").eq("vehicle_id", r.id);
     const { error } = await supabase.from("vehicles").delete().eq("id", r.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await deleteMedia([pathFromUrl(r.main_image_url), ...(imgs ?? []).map((i) => i.storage_path ?? pathFromUrl(i.url))]);
     toast.success("Veículo excluído.");
     refresh();
