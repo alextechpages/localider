@@ -21,8 +21,11 @@ export const Route = createFileRoute("/")({
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(vehiclesQuery());
   },
+export const Route = createFileRoute("/")({
+  loader: ({ context }) => {
+    context.queryClient.ensureQueryData(vehiclesQuery());
+  },
   head: () => ({
-
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
@@ -39,18 +42,20 @@ export const Route = createFileRoute("/")({
           "@type": "AutoRental",
           name: "Localider — Locadora de Veículos",
           telephone: "+55-77-99984-0490",
-          sameAs: ["https://www.instagram.com/localider_lem/"],
-          areaServed: "Luís Eduardo Magalhães, BA",
-          address: [
-            { "@type": "PostalAddress", streetAddress: "Av. JK, 1885, Centro", addressLocality: "Luís Eduardo Magalhães", addressRegion: "BA", addressCountry: "BR" },
-            { "@type": "PostalAddress", streetAddress: "Av. JK, 2305, Centro", addressLocality: "Luís Eduardo Magalhães", addressRegion: "BA", addressCountry: "BR" },
-          ],
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Av. JK, nº 1885",
+            addressLocality: "Luís Eduardo Magalhães",
+            addressRegion: "BA",
+            addressCountry: "BR",
+          },
         }),
       },
     ],
   }),
-  component: Index,
+  component: Home,
 });
+
 
 const USES = [
   { icon: Briefcase, label: "Trabalho" },
