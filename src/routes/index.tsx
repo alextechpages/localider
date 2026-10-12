@@ -30,7 +30,6 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-
     scripts: [
       {
         type: "application/ld+json",
@@ -39,20 +38,18 @@ export const Route = createFileRoute("/")({
           "@type": "AutoRental",
           name: "Localider — Locadora de Veículos",
           telephone: "+55-77-99984-0490",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Av. JK, nº 1885",
-            addressLocality: "Luís Eduardo Magalhães",
-            addressRegion: "BA",
-            addressCountry: "BR",
-          },
+          sameAs: ["https://www.instagram.com/localider_lem/"],
+          areaServed: "Luís Eduardo Magalhães, BA",
+          address: [
+            { "@type": "PostalAddress", streetAddress: "Av. JK, 1885, Centro", addressLocality: "Luís Eduardo Magalhães", addressRegion: "BA", addressCountry: "BR" },
+            { "@type": "PostalAddress", streetAddress: "Av. JK, 2305, Centro", addressLocality: "Luís Eduardo Magalhães", addressRegion: "BA", addressCountry: "BR" },
+          ],
         }),
       },
     ],
   }),
-  component: Home,
+  component: Index,
 });
-
 
 const USES = [
   { icon: Briefcase, label: "Trabalho" },
