@@ -21,10 +21,6 @@ export const Route = createFileRoute("/")({
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(vehiclesQuery());
   },
-export const Route = createFileRoute("/")({
-  loader: ({ context }) => {
-    context.queryClient.ensureQueryData(vehiclesQuery());
-  },
   head: () => ({
     meta: [
       { title: TITLE },
@@ -34,6 +30,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+
     scripts: [
       {
         type: "application/ld+json",
