@@ -82,7 +82,7 @@ function LoginForm() {
         options: { emailRedirectTo: `${window.location.origin}/admin` },
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       if (!data.session) toast.success("Conta criada! Confirme pelo link enviado ao seu e-mail e depois entre aqui.");
       return;
     }
@@ -126,7 +126,7 @@ function NotAdmin({ email, onClaimed }: { email: string; onClaimed: () => void }
   }, []);
   const claim = async () => {
     const { data, error } = await supabase.rpc("claim_first_admin");
-    if (error || !data) return toast.error("Não foi possível concluir. Um administrador já pode existir.");
+    if (error || !data) { toast.error("Não foi possível concluir. Um administrador já pode existir."); return; }
     toast.success("Você agora é o administrador.");
     onClaimed();
   };

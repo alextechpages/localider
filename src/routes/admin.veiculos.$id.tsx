@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowLeft, ImagePlus, Loader2, Save, Trash2 } from "lucide-react";
+import { FileButton } from "@/components/admin/FileButton";
+import { ArrowLeft, Loader2, Save, Trash2 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -93,7 +94,7 @@ function VehicleEditor() {
   const save = async (e: FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(f);
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Dados inválidos"); return; }
     setSaving(true);
     const payload = {
       brand: parsed.data.brand, model: parsed.data.model,
@@ -109,14 +110,14 @@ function VehicleEditor() {
       const { count } = await supabase.from("vehicles").select("id", { count: "exact", head: true });
       const { data, error } = await supabase.from("vehicles").insert({ ...payload, slug: newSlug, sort_order: (count ?? 0) + 1 }).select("id").single();
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Veículo criado! Agora adicione as fotos.");
       invalidate();
       navigate({ to: "/admin/veiculos/$id", params: { id: data.id }, replace: true });
     } else {
       const { error } = await supabase.from("vehicles").update({ ...payload, is_demo: false }).eq("id", id);
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Alterações salvas.");
       invalidate();
     }
@@ -163,7 +164,7 @@ function VehicleEditor() {
 
   const removeImage = async (img: { id: string; url: string; storage_path: string | null }) => {
     const { error } = await supabase.from("vehicle_images").delete().eq("id", img.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await deleteMedia([img.storage_path ?? pathFromUrl(img.url)]);
     refetchImages();
     invalidate();
@@ -266,11 +267,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   return <div className="space-y-1.5"><Label>{label}</Label>{children}</div>;
 }
 
-export function FileButton({ label, multiple, disabled, onFiles }: { label: string; multiple?: boolean; disabled?: boolean; onFiles: (f: FileList | null) => void }) {
-  return (
-    <label className={`inline-flex cursor-pointer items-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-semibold hover:bg-secondary ${disabled ? "pointer-events-none opacity-50" : ""}`}>
-      <ImagePlus className="size-4" /> {label}
-      <input type="file" accept="image/*" multiple={multiple} className="sr-only" onChange={(e) => { onFiles(e.target.files); e.target.value = ""; }} />
-    </label>
-  );
-}
